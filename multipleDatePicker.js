@@ -175,7 +175,8 @@ angular.module('multipleDatePicker', [])
       else
       {
         var dateMonth = moment().startOf('day').toDate();
-        dateMonth.setMonth( scope.displayMonth );
+        dateMonth.setDate(1);
+	dateMonth.setMonth( scope.displayMonth );
         scope.month = moment(dateMonth);
       }
       if (scope.displayLocale !== undefined )

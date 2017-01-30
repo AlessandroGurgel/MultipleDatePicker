@@ -74,7 +74,12 @@ angular.module('multipleDatePicker', [])
        * Type: string
        *
        */
-      displayLocale: '=?'
+      displayLocale: '=?',
+      /*
+       * Type: integer
+       * it indicates current year
+       */
+      currentYear: '=?'
     },
     template: '<div class="multiple-date-picker">'+
             '<div class="picker-top-row">'+
@@ -168,17 +173,19 @@ angular.module('multipleDatePicker', [])
 
       //default values
 
+      if(!scope.currentYear){
+        scope.currentYear = moment().year();
+      }
+
       if (scope.displayMonth === undefined)
       {
-        scope.month = scope.month || moment().startOf('day');
+        scope.month = scope.month || moment().year(scope.currentYear).startOf('day');
       }
       else
       {
-        var dateMonth = moment().startOf('day').toDate();
-        dateMonth.setDate(1);
-	dateMonth.setMonth( scope.displayMonth );
-        scope.month = moment(dateMonth);
+        scope.month = moment().year( scope.currentYear ).month( scope.displayMonth ).date(1);
       }
+
       if (scope.displayLocale !== undefined )
       {
         scope.month.locale( scope.displayLocale.toLowerCase());
@@ -346,7 +353,7 @@ angular.module('multipleDatePicker', [])
         if(lastDayOfMonth.day() === 0 && !scope.sundayFirstDay){
           emptyLastDaysStartIndex = 0;
         }else{
-          emptyLastDaysStartIndex -= lastDayOfMonth.day();          
+          emptyLastDaysStartIndex -= lastDayOfMonth.day();
         }
         for (var k = emptyLastDaysStartIndex; k > 0; k--) {
           scope.emptyLastDays.push({});
